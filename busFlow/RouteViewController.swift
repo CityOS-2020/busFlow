@@ -76,6 +76,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
         return annotationView
     }
     
+    
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
@@ -104,10 +105,10 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
                     }
                     
                     for index in 0..<self.busStations.count{
-                        var annotation = MKPointAnnotation()
+                        var annotation = CustomPointAnnotation()
                         annotation.coordinate = self.routeCoordinates[self.busStations[index].pathIndex!]
                         self.mapView.addAnnotation(annotation)
-                        //annotation.imageName = "busIcon"
+                        annotation.imageName = "busStop"
                         UIView.animateWithDuration(0.0, animations: { () -> Void in
                         })
                     }

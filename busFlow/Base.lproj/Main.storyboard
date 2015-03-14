@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Route View Controller-->
@@ -16,11 +17,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Po5-XV-6U6">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Po5-XV-6U6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="Po5-XV-6U6" secondAttribute="centerX" id="6c8-Um-cLO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Po5-XV-6U6" secondAttribute="trailing" constant="-16" id="CtX-sM-fC6"/>
+                            <constraint firstItem="Po5-XV-6U6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="P8y-7q-6Ic"/>
+                            <constraint firstItem="Po5-XV-6U6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="ckU-dB-Uxk"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Po5-XV-6U6" secondAttribute="bottom" id="ejW-rv-T3I"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="Po5-XV-6U6" id="2aN-Sg-J1S"/>
@@ -28,7 +36,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="216" y="412"/>
+            <point key="canvasLocation" x="167" y="415"/>
         </scene>
     </scenes>
 </document>
