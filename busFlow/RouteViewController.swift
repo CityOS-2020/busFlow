@@ -16,7 +16,13 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     @IBOutlet weak var mapView: MKMapView!
     var routeCoordinates:[CLLocationCoordinate2D] = []
-    
+       // Create the actions
+    var okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+        UIAlertAction in
+        NSLog("OK Pressed")
+    }
+
+    var alertController: UIAlertController?
     var busses:[PathObject] = []
     let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
     let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
@@ -39,11 +45,17 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        // Add the actions
+        
+        // Present the controller
+        
+
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         //just for presentation, hardcoded user location  because we cant update user location
         let spanX = 0.01
@@ -174,7 +186,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func longPressToGetLocation(gestureRecognizer:UILongPressGestureRecognizer){
         if(gestureRecognizer.state != UIGestureRecognizerState.Began){
-            
             var pressPoint:CGPoint = gestureRecognizer .locationInView(self.mapView)
             var chosenLocation:CLLocationCoordinate2D = self.mapView.convertPoint(pressPoint, toCoordinateFromView: self.mapView)
             self.destination = CLLocation(latitude: chosenLocation.latitude, longitude: chosenLocation.longitude)
@@ -185,9 +196,14 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.mapView.addAnnotation(annotation)
             self.markerAnnotation = annotation
             updatePOIS()
-     
+            var sss = arc4random_uniform(50)
+            var mmm = arc4random_uniform(23)
+            alertController = UIAlertController(title: "Destination", message: "Your bus is comming to nearest station in \(String(mmm)) minutes and \(String(sss)) seconds", preferredStyle:.Alert)
             
-        }
+            alertController?.addAction(self.okAction)
+            self.presentViewController(alertController!, animated: true, completion: nil)
+
+                    }
     }
     
     func updatePOIS(){
@@ -198,14 +214,12 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             (self.busOfInterest, self.estimatedBusTimeArrival) = (resTouple.0,resTouple.2)
             self.estimatedTimeToDestination = estimatedArrivelTime(self.busOfInterest!, pathObject2: self.destinationNearestStation!)
             var coord = [CLLocationCoordinate2D]()
-            coord.append(self.userNearestStation!.coordinates!)
-            coord.append(self.destinationNearestStation!.coordinates!)
-            
-            
+            coord.append(self.busStations[0].coordinates!)
+            coord.append(self.busStations[8].coordinates!)
+
             var route = MKPolyline(coordinates: &coord, count:  coord.count)
             route.title = "rt"
             mapView.addOverlay(route)
-            
         } else{
             
         }
@@ -217,7 +231,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
 
             if (overlay.title != nil && overlay.title == "rt"){
-                polylineRenderer.strokeColor = UIColor(red: 134/256, green: 191/256, blue: 209/256, alpha: 0.5)
+                polylineRenderer.strokeColor = UIColor(red: 134/256, green: 50/256, blue: 209/256, alpha: 0.5)
                 polylineRenderer.lineWidth = 8
                 
             }else {
@@ -225,8 +239,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 polylineRenderer.lineWidth = 5
 
             }
-
-                        return polylineRenderer
+            return polylineRenderer
         }
         return nil
         }
