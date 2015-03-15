@@ -1,0 +1,13 @@
+applications:
+- services:
+  - flowBus-cloudantNoSQLDB
+  - flowBus-imfpush
+  - flowBus-AdvancedMobileAccess
+  disk_quota: 1024M
+  host: flowbus
+  name: flowBus
+  command: node app.js
+  path: .
+  domain: eu-gb.mybluemix.net
+  instances: 1
+  memory: 512M
