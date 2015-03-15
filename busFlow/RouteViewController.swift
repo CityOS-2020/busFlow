@@ -11,23 +11,57 @@ import MapKit
 import Alamofire
 import SwiftyJSON
 
-class RouteViewController: UIViewController, MKMapViewDelegate {
+
+class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     var routeCoordinates:[CLLocationCoordinate2D] = []
+    var pressedLocation:CLLocation?
     var busses:[PathObject] = []
     var currentLocation:CLLocation?
     let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
     let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
     var busStations:[PathObject] = []
     var annotations:[CustomPointAnnotation]=[]
+    let locationManager = CLLocationManager()
+    var distanceFromUserToNearestStation:CLLocationDistance?
+    var distanceFromDestinationToNearestStation:CLLocationDistance?
+    var userLocations:[CLLocation] = []
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //just for presentation, hardcoded user location  because we cant update user location
+        let spanX = 0.01
+        let spanY = 0.01
+        var hardcodedLocation:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 43.8470823, longitude: 18.3741403)
+        var newRegion = MKCoordinateRegion(center: hardcodedLocation, span: MKCoordinateSpanMake(spanX, spanY))
+        var annotation = MKPointAnnotation()
+        mapView.addAnnotation(annotation)
+        annotation.coordinate = hardcodedLocation
+
+        
+    
+        mapView.setRegion(newRegion, animated: true)
+    
         mapView.delegate = self
         mapView.mapType = MKMapType.Hybrid
+        if (CLLocationManager.locationServicesEnabled()){
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestAlwaysAuthorization()
+            locationManager.startUpdatingLocation()
+        }
         
+        var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer()
+        longPress.minimumPressDuration = 1.0
+        self.mapView.addGestureRecognizer(longPress)
+        longPress.addTarget(self, action: "longPressToGetLocation:")
+
         //parsing route coordinates from file
         let bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("Komercijala", ofType: "txt")
@@ -42,27 +76,22 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
             var longitude = (longlat[1] as NSString).doubleValue
             self.routeCoordinates.append(CLLocationCoordinate2D(latitude: longitude, longitude: latitude))
         }
+        
         //setting mapView to match route
-        var polygon: MKPolygon = MKPolygon(coordinates: &self.routeCoordinates, count:  self.routeCoordinates.count)
         var route = MKPolyline(coordinates: &self.routeCoordinates, count:  self.routeCoordinates.count)
         mapView.addOverlay(route)
         
-        UIView.animateWithDuration(1.5, animations: { () -> Void in
-            self.mapView.setVisibleMapRect(polygon.boundingMapRect, edgePadding: UIEdgeInsetsMake(20.0, 20.0, 20.0, 230.0), animated: true)
-        })
+        
         //send calls every 2 sec
         var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "refresh", userInfo: nil, repeats: true)
         getBusStations()
     }
-    
-    //custom anotation
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         if !(annotation is CustomPointAnnotation) {
             return nil
         }
         
         let reuseIconId = "busIcon"
-        
         var annotationView = self.mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIconId)
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIconId)
@@ -75,13 +104,36 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
         annotationView.image = UIImage(named:busAnnotation.imageName!)
         return annotationView
     }
+
+    
+    func locationManager(manager:CLLocationManager, didUpdateLocations locations:[AnyObject]) {
+        
+        self.userLocations.append(locations[0] as CLLocation)
+        let spanX = 0.007
+        let spanY = 0.007
+        if( self.userLocations.count == 1){
+        var newRegion = MKCoordinateRegion(center: mapView.userLocation.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
+        mapView.setRegion(newRegion, animated: true)
+        }
+    }
+
+
+    
+    func longPressToGetLocation(gestureRecognizer:UILongPressGestureRecognizer){
+        if(gestureRecognizer.state != UIGestureRecognizerState.Began){
+            var pressPoint:CGPoint = gestureRecognizer.locationInView(self.mapView)
+            var chosenLocation:CLLocationCoordinate2D = self.mapView.convertPoint(pressPoint, toCoordinateFromView: self.mapView)
+            self.pressedLocation = CLLocation(latitude: chosenLocation.latitude, longitude: chosenLocation.latitude)
+        }
+    }
     
     
+
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
             polylineRenderer.strokeColor = UIColor(red: 71/256, green: 191/256, blue: 209/256, alpha: 1)
-            polylineRenderer.lineWidth = 1
+            polylineRenderer.lineWidth = 4
             return polylineRenderer
         }
         return nil
@@ -98,12 +150,12 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
                     NSLog("Error: \(error)")
                 }
                 else {
-                    NSLog("Success: \(self.urlBusStations)")
+                   // NSLog("Success: \(self.urlBusStations)")
                     var jsonBusStations = JSON(json!).arrayValue
                     for i in jsonBusStations {
                         self.busStations.append(PathObject(pathObject:i))
                     }
-                    
+
                     for index in 0..<self.busStations.count{
                         var annotation = CustomPointAnnotation()
                         annotation.coordinate = self.routeCoordinates[self.busStations[index].pathIndex!]
@@ -123,7 +175,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate {
                     NSLog("Error: \(error)")
                 }
                 else {
-                    NSLog("Success: \(self.urlBusses)")
+                   // NSLog("Success: \(self.urlBusses)")
                     var jsonBusses = JSON(json!).arrayValue
                     self.busses.removeAll(keepCapacity: true)
                     for i in jsonBusses {
