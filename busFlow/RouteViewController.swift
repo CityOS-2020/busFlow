@@ -31,6 +31,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +125,12 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var pressPoint:CGPoint = gestureRecognizer.locationInView(self.mapView)
             var chosenLocation:CLLocationCoordinate2D = self.mapView.convertPoint(pressPoint, toCoordinateFromView: self.mapView)
             self.pressedLocation = CLLocation(latitude: chosenLocation.latitude, longitude: chosenLocation.latitude)
-        }
+            var annotation = CustomPointAnnotation()
+            annotation.coordinate = chosenLocation
+            self.mapView.addAnnotation(annotation)
+            annotation.imageName = "busStop"
+
+                    }
     }
     
     
@@ -160,7 +166,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                         var annotation = CustomPointAnnotation()
                         annotation.coordinate = self.routeCoordinates[self.busStations[index].pathIndex!]
                         self.mapView.addAnnotation(annotation)
-                        annotation.imageName = "busStop"
+                        annotation.imageName = "station"
                         UIView.animateWithDuration(0.0, animations: { () -> Void in
                         })
                     }
@@ -186,7 +192,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                         for index in 0..<self.busses.count{
                             var annotation = CustomPointAnnotation()
                             self.mapView.addAnnotation(annotation)
-                            annotation.imageName = "busIcon"
+                            annotation.imageName = "bus"
                             self.annotations.append(annotation)
                             annotation.coordinate =  self.routeCoordinates[self.busses[index].pathIndex!]
                             UIView.animateWithDuration(3.0, animations: { () -> Void in

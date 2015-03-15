@@ -11,6 +11,7 @@ import MapKit
 import SwiftyJSON
 
 class PathObject: NSObject {
+    
     var id:Int?
     var pathIndex:Int?
     var coordinates:CLLocationCoordinate2D?

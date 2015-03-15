@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A28AB9A93DC0D434D59904C4 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DEBC4D497169D4FD46FA98D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E98859C21AB56C4000FC2869 /* bus.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C11AB56C4000FC2869 /* bus.png */; };
+		E98859C41AB56C5500FC2869 /* station.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C31AB56C5500FC2869 /* station.png */; };
 		E9B446E71AB3748E00E9C367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B446E61AB3748E00E9C367 /* AppDelegate.swift */; };
 		E9B446EA1AB3748E00E9C367 /* busFlow.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9B446E81AB3748E00E9C367 /* busFlow.xcdatamodeld */; };
 		E9B446EF1AB3748E00E9C367 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9B446ED1AB3748E00E9C367 /* Main.storyboard */; };
@@ -38,6 +40,8 @@
 		0DEBC4D497169D4FD46FA98D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		15F3B565EED756474CEBAA56 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		59D01888E2334AB656561CA1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E98859C11AB56C4000FC2869 /* bus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bus.png; sourceTree = "<group>"; };
+		E98859C31AB56C5500FC2869 /* station.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = station.png; sourceTree = "<group>"; };
 		E9B446E11AB3748E00E9C367 /* busFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = busFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9B446E51AB3748E00E9C367 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9B446E61AB3748E00E9C367 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -126,10 +130,12 @@
 			isa = PBXGroup;
 			children = (
 				E9C050C31AB47C4700C516C2 /* busIcon@2x.png */,
+				E98859C11AB56C4000FC2869 /* bus.png */,
 				E9C050C71AB4947800C516C2 /* route@2x.png */,
 				E9C050B11AB3FADA00C516C2 /* Komercijala.txt */,
 				E9C050BD1AB4731800C516C2 /* busStop@2x.png */,
 				E9B446E51AB3748E00E9C367 /* Info.plist */,
+				E98859C31AB56C5500FC2869 /* station.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -272,6 +278,8 @@
 				E9B446F11AB3748E00E9C367 /* Images.xcassets in Resources */,
 				E9C050C41AB47C4700C516C2 /* busIcon@2x.png in Resources */,
 				E9C050C81AB4947800C516C2 /* route@2x.png in Resources */,
+				E98859C21AB56C4000FC2869 /* bus.png in Resources */,
+				E98859C41AB56C5500FC2869 /* station.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
