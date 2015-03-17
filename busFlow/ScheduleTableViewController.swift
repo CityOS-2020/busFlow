@@ -8,20 +8,27 @@
 
 import UIKit
 
+
+
 class ScheduleTableViewController: UITableViewController {
 
+    var stations:[String]?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //change when model is updated to get stations
+        self.stations = ["Dobrinja 1", "Dobrinja 2", "Dobrinja 3", "Alipasino", "Nedzarici", "Otoka", "Pofalici", "Muzej","SSC", "Vijecnica"]
+    
+        self.tableView.reloadData()
 
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
        
         return 1
@@ -30,18 +37,16 @@ class ScheduleTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return 5
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
-
-        // Configure the cell...
-
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        
+        cell.textLabel!.text = "dobrinja"
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
