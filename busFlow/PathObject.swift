@@ -19,6 +19,6 @@ class PathObject: NSObject {
     init(pathObject:JSON) {
         self.id = pathObject["id"].intValue
         self.pathIndex = pathObject["pathIndex"].intValue
-        self.coordinates = CLLocationCoordinate2D(latitude: pathObject["geo"]["lng"].doubleValue, longitude: pathObject["geo"]["lat"].doubleValue)
+        self.coordinates = CLLocationCoordinate2D(latitude: pathObject["geo"]["lat"].doubleValue, longitude: pathObject["geo"]["lng"].doubleValue)
     }
 }
