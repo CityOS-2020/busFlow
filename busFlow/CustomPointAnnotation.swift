@@ -10,4 +10,7 @@ import UIKit
 
 class CustomPointAnnotation: MKPointAnnotation {
     var imageName:String?
+    init(imageName:String) {
+        self.imageName = imageName
+    }
 }
