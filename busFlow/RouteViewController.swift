@@ -14,63 +14,61 @@ import SwiftyJSON
 
 class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
+    let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
+    let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
+    
     @IBOutlet weak var mapView: MKMapView!
     var routeCoordinates:[CLLocationCoordinate2D] = []
-       // Create the actions
+    // Create the actions
     var okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
         UIAlertAction in
         NSLog("OK Pressed")
     }
-
     var alertController: UIAlertController?
+    
+    var stations:[PathObject] = []
     var busses:[PathObject] = []
-    let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
-    let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
-    var busStations:[PathObject] = []
+    
     var annotations:[CustomPointAnnotation]=[]
     let locationManager = CLLocationManager()
     var markerAnnotation:CustomPointAnnotation?
     
     var userLocation:CLLocation?
+    var userAnnotation:CustomPointAnnotation?
     
     var userNearestStation:PathObject?
-    var destinationNearestStation:PathObject?
+    var userNearestStationAnnotation:CustomPointAnnotation?
+    
+    var destinationStation:PathObject?
+    var destinationNearestStationAnnotation:CustomPointAnnotation?
     
     var busOfInterest:PathObject?
+    var busOfInterestAnnotation:CustomPointAnnotation?
     
     var estimatedTimeToDestination:Int?
     var estimatedBusTimeArrival:Int?
     
     var destination:CLLocation?
+    var destinationAnotation: CustomPointAnnotation?
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(false)
-        
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        // Add the actions
-        
-        // Present the controller
-        
-
-    }
+    var routOverlay: MKPolyline?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //just for presentation, hardcoded user location  because we cant update user location
         let spanX = 0.01
         let spanY = 0.01
-        let hardcodedLocation:CLLocation = CLLocation(latitude: 43.8470823, longitude: 18.3741403)
-        self.userLocation = hardcodedLocation
-        var newRegion = MKCoordinateRegion(center: hardcodedLocation.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
+        
+        userLocation = CLLocation(latitude: 43.8470823, longitude: 18.3741403)
+        
+        var newRegion = MKCoordinateRegion(center: userLocation!.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
         var annotation = MKPointAnnotation()
         mapView.addAnnotation(annotation)
-        annotation.coordinate = hardcodedLocation.coordinate
-        
+        annotation.coordinate = userLocation!.coordinate
         mapView.setRegion(newRegion, animated: true)
-        
         mapView.delegate = self
         mapView.mapType = MKMapType.Hybrid
+        
         if (CLLocationManager.locationServicesEnabled()){
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -83,6 +81,19 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         self.mapView.addGestureRecognizer(longPress)
         longPress.addTarget(self, action: "longPressToGetLocation:")
         
+        parseRouteCoordinates()
+        
+        // Add route polyline
+        var route = MKPolyline(coordinates: &self.routeCoordinates, count:  self.routeCoordinates.count)
+        route.title = "sss"
+        mapView.addOverlay(route)
+        
+        
+        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "refresh", userInfo: nil, repeats: true)
+        getBusStations()
+    }
+    
+    func parseRouteCoordinates(){
         //parsing route coordinates from file
         let bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("Komercijala", ofType: "txt")
@@ -96,41 +107,50 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var longitude = (longlat[1] as NSString).doubleValue
             self.routeCoordinates.append(CLLocationCoordinate2D(latitude: longitude, longitude: latitude))
         }
-        
-        //setting mapView to match route
-        var route = MKPolyline(coordinates: &self.routeCoordinates, count:  self.routeCoordinates.count)
-        route.title = "sss"
-        mapView.addOverlay(route)
-        
-        
-        //send calls every 2 sec
-        var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "refresh", userInfo: nil, repeats: true)
-        getBusStations()
     }
     
     
     //functions for distance calculations and time estmations
     func findNearestStationFromLocation(location:CLLocationCoordinate2D)->(PathObject, CLLocationDistance){
         
-        return findNearestFromLocation(location, pathObjects: self.busStations)
+        return findNearestFromLocation(location, pathObjects: self.stations)
     }
     
     func estimatedArrivelTime(pathObject1:PathObject,pathObject2:PathObject)->Int{
         return (pathObject2.pathIndex! - pathObject1.pathIndex!)*3
     }
     
-    func findNearestBusFromStation(busStation:PathObject)->(PathObject, CLLocationDistance, Int){
-        var buses = self.busses.filter({s in s.pathIndex < busStation.pathIndex})
-        println(busStation)
-        var resultTuple  = findNearestFromLocation(busStation.coordinates!,  pathObjects: self.busses)
-        return (resultTuple.0,resultTuple.1, (busStation.pathIndex! - resultTuple.0.pathIndex!)*3)
+    func findNearestApproachingBusFromStation(busStation:PathObject)->(PathObject, Int){
+        var approachingBussses = self.busses.filter({s in s.pathIndex < busStation.pathIndex})
+        
+        var resultBus: PathObject?
+        var pathIndex: Int?
+
+        
+        if(approachingBussses.count == 0){
+            resultBus = findPathObjectWithMaxPathIndex(self.busses)
+            pathIndex = resultBus!.pathIndex
+            return (resultBus!, (self.routeCoordinates.count - 1 - pathIndex! + busStation.pathIndex!)*3)
+        }else{
+            resultBus = findPathObjectWithMaxPathIndex(approachingBussses)
+            pathIndex = resultBus!.pathIndex
+            return (resultBus!, (busStation.pathIndex! - pathIndex!)*3)
+        }
+    }
+    
+    func findPathObjectWithMaxPathIndex(pathObjects: [PathObject])-> (PathObject){
+        var result = pathObjects[0]
+        for i in pathObjects{
+            if(result.pathIndex < i.pathIndex){
+                result = i
+            }
+        }
+        return result
     }
     
     func findNearestFromLocation(location:CLLocationCoordinate2D, pathObjects:[PathObject]) -> (PathObject, CLLocationDistance) {
         
         var locationOfInterest = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        
-        println(locationOfInterest)
         
         var busStationLocation = CLLocation(latitude: pathObjects[0].coordinates!.latitude, longitude: pathObjects[0].coordinates!.longitude)
         var minDistance = locationOfInterest.distanceFromLocation(busStationLocation)
@@ -141,14 +161,11 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             
             var distance = locationOfInterest.distanceFromLocation(busStationLocation)
             
-            println(distance)
-            
             if (distance < minDistance) {
                 nearestIndex = i
                 minDistance = distance
             }
         }
-        
         return(pathObjects[nearestIndex], minDistance)
     }
     
@@ -176,50 +193,71 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         return annotationView
     }
-
+    
     
     func locationManager(manager:CLLocationManager, didUpdateLocations locations:[AnyObject]) {
         
         //self.userLocation = locations[0] as? CLLocation
-             updatePOIS()
+        updatePOIS()
     }
     
     func longPressToGetLocation(gestureRecognizer:UILongPressGestureRecognizer){
         if(gestureRecognizer.state != UIGestureRecognizerState.Began){
-            var pressPoint:CGPoint = gestureRecognizer .locationInView(self.mapView)
+            var pressPoint:CGPoint = gestureRecognizer.locationInView(self.mapView)
             var chosenLocation:CLLocationCoordinate2D = self.mapView.convertPoint(pressPoint, toCoordinateFromView: self.mapView)
             self.destination = CLLocation(latitude: chosenLocation.latitude, longitude: chosenLocation.longitude)
             self.mapView.removeAnnotation(self.markerAnnotation)
-            var annotation = CustomPointAnnotation()
+            var annotation = CustomPointAnnotation(imageName: "destination")
             annotation.coordinate = chosenLocation
-            annotation.imageName = "destination"
             self.mapView.addAnnotation(annotation)
             self.markerAnnotation = annotation
+            
             updatePOIS()
-            var sss = arc4random_uniform(50)
-            var mmm = arc4random_uniform(23)
-            alertController = UIAlertController(title: "Destination", message: "Your bus is comming to nearest station in \(String(mmm)) minutes and \(String(sss)) seconds", preferredStyle:.Alert)
+            
+            alertController = UIAlertController(title: "Destination", message: "Your bus is comming to nearest station in \(self.estimatedBusTimeArrival!/60) minutes and \(self.estimatedBusTimeArrival!%60) seconds. Full time to destination point is \(self.estimatedTimeToDestination!/60) minutes", preferredStyle:.Alert)
             
             alertController?.addAction(self.okAction)
             self.presentViewController(alertController!, animated: true, completion: nil)
-
-                    }
+            
+        }
     }
     
     func updatePOIS(){
         if( self.destination != nil && self.userLocation != nil){
             println(self.destination)
-            self.destinationNearestStation = self.findNearestStationFromLocation(self.destination!.coordinate).0
-            var resTouple = self.findNearestBusFromStation(self.userNearestStation!)
-            (self.busOfInterest, self.estimatedBusTimeArrival) = (resTouple.0,resTouple.2)
-            self.estimatedTimeToDestination = estimatedArrivelTime(self.busOfInterest!, pathObject2: self.destinationNearestStation!)
-            var coord = [CLLocationCoordinate2D]()
-            coord.append(self.busStations[0].coordinates!)
-            coord.append(self.busStations[8].coordinates!)
+            self.destinationStation = self.findNearestStationFromLocation(self.destination!.coordinate).0
+            var resTouple = self.findNearestApproachingBusFromStation(self.userNearestStation!)
+            
+            (self.busOfInterest, self.estimatedBusTimeArrival) = (resTouple.0, resTouple.1)
+        
+            if(self.userNearestStationAnnotation != nil){
+                self.userNearestStationAnnotation?.coordinate = self.userNearestStation!.coordinates!
+            }else {
+                self.userNearestStationAnnotation = CustomPointAnnotation(imageName: "nearest-destination-station-icon")
+                mapView.addAnnotation(self.userNearestStationAnnotation)
+            }
+            
+            if(self.destinationAnotation != nil){
+                self.destinationAnotation?.coordinate = self.destinationStation!.coordinates!
+            }else {
+                self.destinationAnotation = CustomPointAnnotation(imageName: "nearestStation")
+                mapView.addAnnotation(self.destinationAnotation)
+            }
 
-            var route = MKPolyline(coordinates: &coord, count:  coord.count)
-            route.title = "rt"
-            mapView.addOverlay(route)
+            self.estimatedTimeToDestination = estimatedArrivelTime(self.busOfInterest!, pathObject2: self.destinationStation!)
+            
+            var coord = [CLLocationCoordinate2D]()
+            for i in 0..<self.routeCoordinates.count{
+                if(i >= self.userNearestStation!.pathIndex! && i <= self.destinationStation!.pathIndex!){
+                    coord.append(self.routeCoordinates[i])
+                }
+            }
+            if(self.routOverlay != nil){
+                mapView.removeOverlay(self.routOverlay)
+            }
+            self.routOverlay = MKPolyline(coordinates: &coord, count:  coord.count)
+            self.routOverlay?.title = "travelRoute"
+            mapView.addOverlay(self.routOverlay)
         } else{
             
         }
@@ -229,20 +267,20 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
-
-            if (overlay.title != nil && overlay.title == "rt"){
-                polylineRenderer.strokeColor = UIColor(red: 134/256, green: 50/256, blue: 209/256, alpha: 0.5)
+            
+            if (overlay.title != nil && overlay.title == "travelRoute"){
+                polylineRenderer.strokeColor = UIColor(red: 255/256, green: 255/256, blue: 10/256, alpha: 0.6)
                 polylineRenderer.lineWidth = 8
                 
             }else {
                 polylineRenderer.strokeColor = UIColor(red: 71/256, green: 191/256, blue: 209/256, alpha: 1)
                 polylineRenderer.lineWidth = 5
-
+                
             }
             return polylineRenderer
         }
         return nil
-        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -259,14 +297,13 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     var jsonBusStations = JSON(json!).arrayValue
                     
                     for i in jsonBusStations {
-                        self.busStations.append(PathObject(pathObject:i))
+                        self.stations.append(PathObject(pathObject:i))
                     }
                     
-                    for index in 0..<self.busStations.count{
-                        var annotation = CustomPointAnnotation()
-                        annotation.coordinate = self.routeCoordinates[self.busStations[index].pathIndex!]
+                    for index in 0..<self.stations.count{
+                        var annotation = CustomPointAnnotation(imageName: "station")
+                        annotation.coordinate = self.stations[index].coordinates!
                         self.mapView.addAnnotation(annotation)
-                        annotation.imageName = "station"
                     }
                     println(self.userLocation)
                     self.userNearestStation = self.findNearestStationFromLocation(self.userLocation!.coordinate).0
@@ -291,11 +328,10 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     
                     if(self.annotations.count != self.busses.count){
                         for index in 0..<self.busses.count{
-                            var annotation = CustomPointAnnotation()
+                            var annotation = CustomPointAnnotation(imageName: "bus")
                             self.mapView.addAnnotation(annotation)
-                            annotation.imageName = "bus"
                             self.annotations.append(annotation)
-                            annotation.coordinate =  self.routeCoordinates[self.busses[index].pathIndex!]
+                            annotation.coordinate =  self.busses[index].coordinates!
                             UIView.animateWithDuration(3.0, animations: { () -> Void in
                                 annotation.coordinate = self.routeCoordinates[(self.busses[index].pathIndex! + 1)%620]
                             })
@@ -304,7 +340,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     else{
                         for index in 0..<self.busses.count{
                             
-                            if(self.busses[index].id == self.busOfInterest?.id){
+                            if(self.busOfInterest != nil && self.busses[index].id == self.busOfInterest!.id){
                                 self.annotations[index].imageName = "bus-of-interest-icon"
                             }else{
                                 self.annotations[index].imageName = "bus"
