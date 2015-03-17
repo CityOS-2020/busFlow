@@ -12,7 +12,7 @@
 		E98859C41AB56C5500FC2869 /* station.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C31AB56C5500FC2869 /* station.png */; };
 		E98859C81AB5979700FC2869 /* bus-of-interest-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C51AB5979700FC2869 /* bus-of-interest-icon.png */; };
 		E98859C91AB5979700FC2869 /* nearest-destination-station-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C61AB5979700FC2869 /* nearest-destination-station-icon.png */; };
-		E98859CA1AB5979700FC2869 /* nearest-user-station-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C71AB5979700FC2869 /* nearest-user-station-icon.png */; };
+		E98859CA1AB5979700FC2869 /* nearestStation.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859C71AB5979700FC2869 /* nearestStation.png */; };
 		E98859CC1AB5C0A000FC2869 /* ScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98859CB1AB5C0A000FC2869 /* ScheduleTableViewController.swift */; };
 		E98859CE1AB5CB5100FC2869 /* destination.png in Resources */ = {isa = PBXBuildFile; fileRef = E98859CD1AB5CB5100FC2869 /* destination.png */; };
 		E9B446E71AB3748E00E9C367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B446E61AB3748E00E9C367 /* AppDelegate.swift */; };
@@ -49,7 +49,7 @@
 		E98859C31AB56C5500FC2869 /* station.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = station.png; sourceTree = "<group>"; };
 		E98859C51AB5979700FC2869 /* bus-of-interest-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bus-of-interest-icon.png"; sourceTree = "<group>"; };
 		E98859C61AB5979700FC2869 /* nearest-destination-station-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nearest-destination-station-icon.png"; sourceTree = "<group>"; };
-		E98859C71AB5979700FC2869 /* nearest-user-station-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nearest-user-station-icon.png"; sourceTree = "<group>"; };
+		E98859C71AB5979700FC2869 /* nearestStation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nearestStation.png; sourceTree = "<group>"; };
 		E98859CB1AB5C0A000FC2869 /* ScheduleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewController.swift; sourceTree = "<group>"; };
 		E98859CD1AB5CB5100FC2869 /* destination.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destination.png; sourceTree = "<group>"; };
 		E9B446E11AB3748E00E9C367 /* busFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = busFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +145,7 @@
 				E9C050C71AB4947800C516C2 /* route@2x.png */,
 				E98859C51AB5979700FC2869 /* bus-of-interest-icon.png */,
 				E98859C61AB5979700FC2869 /* nearest-destination-station-icon.png */,
-				E98859C71AB5979700FC2869 /* nearest-user-station-icon.png */,
+				E98859C71AB5979700FC2869 /* nearestStation.png */,
 				E9C050B11AB3FADA00C516C2 /* Komercijala.txt */,
 				E9C050BD1AB4731800C516C2 /* busStop@2x.png */,
 				E9B446E51AB3748E00E9C367 /* Info.plist */,
@@ -298,7 +298,7 @@
 				E9C050C81AB4947800C516C2 /* route@2x.png in Resources */,
 				E98859C21AB56C4000FC2869 /* bus.png in Resources */,
 				E98859C41AB56C5500FC2869 /* station.png in Resources */,
-				E98859CA1AB5979700FC2869 /* nearest-user-station-icon.png in Resources */,
+				E98859CA1AB5979700FC2869 /* nearestStation.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

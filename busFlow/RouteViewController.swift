@@ -22,7 +22,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     // Create the actions
     var okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
         UIAlertAction in
-        NSLog("OK Pressed")
     }
     var alertController: UIAlertController?
     
@@ -213,9 +212,11 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.markerAnnotation = annotation
             
             updatePOIS()
-            
+            if( self.userNearestStation == self.destinationStation){
+                alertController = UIAlertController(title: "Destination", message: "It is healthy to walk sometimes!", preferredStyle:.Alert)
+            }else{
             alertController = UIAlertController(title: "Destination", message: "Your bus is comming to nearest station in \(self.estimatedBusTimeArrival!/60) minutes and \(self.estimatedBusTimeArrival!%60) seconds. Full time to destination point is \(self.estimatedTimeToDestination!/60) minutes", preferredStyle:.Alert)
-            
+            }
             alertController?.addAction(self.okAction)
             self.presentViewController(alertController!, animated: true, completion: nil)
             
