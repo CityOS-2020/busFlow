@@ -44,6 +44,9 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     var busOfInterest:PathObject?
     var busOfInterestAnnotation:CustomPointAnnotation?
     
+    var missedBus:PathObject?
+    var missedBusAnnotation:CustomPointAnnotation?
+    
     var estimatedTimeToDestination:Int?
     var estimatedBusTimeArrival:Int?
     
@@ -342,6 +345,11 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                         for index in 0..<self.busses.count{
                             
                             if(self.busOfInterest != nil && self.busses[index].id == self.busOfInterest!.id){
+                                for annotation in self.annotations{
+                                    if (annotation.imageName == "bus-of-interest-icon"){
+                                        annotation.imageName = "bus"
+                                    }
+                                }
                                 self.annotations[index].imageName = "bus-of-interest-icon"
                             }else{
                                 self.annotations[index].imageName = "bus"
