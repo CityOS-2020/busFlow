@@ -17,13 +17,22 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
     let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
     
+    @IBOutlet weak var travelDetailsView: UIView!
+    @IBOutlet weak var startingStationLabel: UILabel!
+    @IBOutlet weak var destinationStationLabel: UILabel!
+    @IBOutlet weak var firstBusArrivalLabel: UILabel!
+    @IBOutlet weak var nextBusArrivalLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    
+    @IBAction func closeTravelDetailsViewbutton(sender: UIButton) {
+        travelDetailsView.hidden = true
+    }
+    
+    
+    
+    
     var routeCoordinates:[CLLocationCoordinate2D] = []
     // Create the actions
-    var okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-        UIAlertAction in
-    }
-    var alertController: UIAlertController?
     
     var stations:[PathObject] = []
     var busses:[PathObject] = []
@@ -60,6 +69,11 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         let spanX = 0.01
         let spanY = 0.01
+        
+        self.travelDetailsView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        mapView.addSubview(travelDetailsView)
+        mapView.bringSubviewToFront(travelDetailsView)
+        self.travelDetailsView.hidden = true
         
         userLocation = CLLocation(latitude: 43.8470823, longitude: 18.3741403)
         
@@ -215,14 +229,8 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.markerAnnotation = annotation
             
             updatePOIS()
-            if( self.userNearestStation == self.destinationStation){
-                alertController = UIAlertController(title: "Destination", message: "It is healthy to walk sometimes!", preferredStyle:.Alert)
-            }else{
-            alertController = UIAlertController(title: "Destination", message: "Your bus is comming to nearest station in \(self.estimatedBusTimeArrival!/60) minutes and \(self.estimatedBusTimeArrival!%60) seconds. Full time to destination point is \(self.estimatedTimeToDestination!/60) minutes", preferredStyle:.Alert)
-            }
-            alertController?.addAction(self.okAction)
-            self.presentViewController(alertController!, animated: true, completion: nil)
-            
+            self.firstBusArrivalLabel.text = "First bus in \(self.estimatedBusTimeArrival!/60) min \(self.estimatedBusTimeArrival!%60) s"
+             self.travelDetailsView.hidden = false
         }
     }
     
@@ -343,18 +351,14 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     }
                     else{
                         for index in 0..<self.busses.count{
-                            
                             if(self.busOfInterest != nil && self.busses[index].id == self.busOfInterest!.id){
-                                for annotation in self.annotations{
-                                    if (annotation.imageName == "bus-of-interest-icon"){
-                                        annotation.imageName = "bus"
-                                    }
-                                }
                                 self.annotations[index].imageName = "bus-of-interest-icon"
                             }else{
                                 self.annotations[index].imageName = "bus"
                             }
-                            
+                            if (self.busses[index].pathIndex >= self.userNearestStation!.pathIndex){
+                                self.annotations[index].imageName = "bus"
+                            }
                             self.annotations[index].coordinate =  self.routeCoordinates[self.busses[index].pathIndex!]
                             UIView.animateWithDuration(3.0, animations: { () -> Void in
                                 self.annotations[index].coordinate = self.routeCoordinates[(self.busses[index].pathIndex! + 1)%620]
