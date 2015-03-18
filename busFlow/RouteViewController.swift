@@ -259,11 +259,13 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.estimatedTimeToDestination = estimatedArrivelTime(self.busOfInterest!, pathObject2: self.destinationStation!)
             
             var coord = [CLLocationCoordinate2D]()
+            coord.append(self.userLocation!.coordinate)
             for i in 0..<self.routeCoordinates.count{
                 if(i >= self.userNearestStation!.pathIndex! && i <= self.destinationStation!.pathIndex!){
                     coord.append(self.routeCoordinates[i])
                 }
             }
+            coord.append(self.markerAnnotation!.coordinate)
             if(self.routOverlay != nil){
                 mapView.removeOverlay(self.routOverlay)
             }
