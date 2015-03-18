@@ -28,9 +28,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         travelDetailsView.hidden = true
     }
     
-    
-    
-    
     var routeCoordinates:[CLLocationCoordinate2D] = []
     // Create the actions
     
@@ -69,8 +66,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         let spanX = 0.01
         let spanY = 0.01
-        
-        self.travelDetailsView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+
         mapView.addSubview(travelDetailsView)
         mapView.bringSubviewToFront(travelDetailsView)
         self.travelDetailsView.hidden = true

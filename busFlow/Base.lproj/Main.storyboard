@@ -55,62 +55,65 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cna-0s-LTp">
-                                <rect key="frame" x="309" y="55" width="282" height="122"/>
+                                <rect key="frame" x="16" y="55" width="568" height="122"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpD-zJ-UFn">
-                                        <rect key="frame" x="8" y="35" width="266" height="21"/>
+                                        <rect key="frame" x="8" y="28" width="266" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="First bus in:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXj-Yu-0Cg">
-                                        <rect key="frame" x="8" y="64" width="266" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="First bus in:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXj-Yu-0Cg">
+                                        <rect key="frame" x="8" y="57" width="233" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Next bus in:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ku-P7-lJJ">
+                                        <rect key="frame" x="8" y="86" width="266" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="From:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b6Q-te-Vgh">
+                                        <rect key="frame" x="8" y="8" width="228" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bus-of-interest-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ztd-2O-nTt">
+                                        <rect key="frame" x="530" y="57" width="30" height="30"/>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pe-mw-TYn">
-                                        <rect key="frame" x="244" y="-3" width="30" height="30"/>
+                                        <rect key="frame" x="530" y="8" width="30" height="30"/>
                                         <state key="normal" title="X">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="closeTravelDetailsViewbutton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xsx-7h-73m"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Next bus in:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ku-P7-lJJ">
-                                        <rect key="frame" x="8" y="93" width="266" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="From:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b6Q-te-Vgh">
-                                        <rect key="frame" x="8" y="6" width="228" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="282" id="C3I-k0-LU3"/>
-                                    <constraint firstAttribute="height" constant="122" id="k8d-7W-4ou"/>
+                                    <constraint firstAttribute="height" constant="122" id="4oq-Df-2LO"/>
                                 </constraints>
                             </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Po5-XV-6U6">
-                                <rect key="frame" x="0.0" y="44" width="600" height="507"/>
+                                <rect key="frame" x="0.0" y="46" width="600" height="507"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Cna-0s-LTp" secondAttribute="trailing" constant="-7" id="0in-LU-U6D"/>
-                            <constraint firstAttribute="centerX" secondItem="Po5-XV-6U6" secondAttribute="centerX" id="6c8-Um-cLO"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Po5-XV-6U6" secondAttribute="trailing" constant="-16" id="CtX-sM-fC6"/>
-                            <constraint firstItem="Po5-XV-6U6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="P8y-7q-6Ic"/>
-                            <constraint firstItem="Cna-0s-LTp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="35" id="Wmu-iU-1ox"/>
-                            <constraint firstItem="Po5-XV-6U6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="ckU-dB-Uxk"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Po5-XV-6U6" secondAttribute="bottom" id="ejW-rv-T3I"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Po5-XV-6U6" secondAttribute="trailing" constant="-16" id="BSE-W4-738"/>
+                            <constraint firstItem="Po5-XV-6U6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="I3V-e9-AF8"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Po5-XV-6U6" secondAttribute="bottom" constant="-3" id="K0h-66-LdQ"/>
+                            <constraint firstItem="Po5-XV-6U6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="27" id="Sbe-OL-VIx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Po5-XV-6U6" secondAttribute="trailing" constant="-16" id="iQ3-so-Nje"/>
+                            <constraint firstItem="Cna-0s-LTp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="35" id="lfb-62-zYD"/>
+                            <constraint firstItem="Cna-0s-LTp" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ng0-yq-D6m"/>
+                            <constraint firstItem="Cna-0s-LTp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="sdW-rw-a9X"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="Jcs-oa-AiX"/>
@@ -197,4 +200,7 @@
             <point key="canvasLocation" x="918" y="705"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bus-of-interest-icon.png" width="38" height="38"/>
+    </resources>
 </document>
