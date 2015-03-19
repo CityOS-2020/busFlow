@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import Alamofire
 import SwiftyJSON
-
+import QuartzCore
 
 class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -64,6 +64,14 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.travelDetailsView.layer.cornerRadius = 10.0
+        self.travelDetailsView.layer.masksToBounds = true
+        
+        self.travelDetailsView.layer.shadowColor = UIColor.blackColor().CGColor
+        self.travelDetailsView.layer.shadowOffset = CGSizeMake(10 , 10)
+        self.travelDetailsView.layer.shadowRadius = 5
+        self.travelDetailsView.layer.shadowOpacity = 1.0
+      
         let spanX = 0.01
         let spanY = 0.01
 
