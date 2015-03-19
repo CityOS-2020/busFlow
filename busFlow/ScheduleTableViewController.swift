@@ -10,17 +10,20 @@ import UIKit
 
 
 
-class ScheduleTableViewController: UITableViewController {
+class ScheduleTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var stations:[String]?
+    //change when JSON is updated to get station names
+    let stations = [
+        1 : ["Dobrinja 1", "Dobrinja 2", "Dobrinja 3"],
+        2 : ["Alipasino 1", "Alipasino 2"],
+        3 : "Nedzarici"
+        ]
+    var regions:[Int]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //change when model is updated to get stations
-        self.stations = ["Dobrinja 1", "Dobrinja 2", "Dobrinja 3", "Alipasino", "Nedzarici", "Otoka", "Pofalici", "Muzej","SSC", "Vijecnica"]
-    
         self.tableView.reloadData()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,14 +40,14 @@ class ScheduleTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 5
+        return self.stations.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
-        cell.textLabel!.text = "dobrinja"
+        //cell.textLabel!.text =
         return cell
     }
 

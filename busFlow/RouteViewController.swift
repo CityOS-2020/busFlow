@@ -17,6 +17,7 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     let urlBusses = "http://flowbus.eu-gb.mybluemix.net/api/busses"
     let urlBusStations = "http://flowbus.eu-gb.mybluemix.net/api/stations"
     
+    @IBOutlet weak var busOfInterestImageView: UIImageView!
     @IBOutlet weak var travelDetailsView: UIView!
     @IBOutlet weak var startingStationLabel: UILabel!
     @IBOutlet weak var destinationStationLabel: UILabel!
