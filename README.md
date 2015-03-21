@@ -4,9 +4,9 @@ Have you ever been frustrated waiting for a bus; not certain about when it will 
 busFlow is a smart solution for public transport which provides you with real time information about every bus in your city. 
 One press and you will know: 
 - at which station you should wait,
- - at which station you should get off, 
+- at which station you should get off, 
 - estimated time of arrival,
- - the route you will take. 
+- the route you will take. 
 This app can be easily implemented for TAXI service, delivery service, or any other way of transportation. You will never again come to the bus station too early, or too late. You will never again miss a bus  that was just two blocks away. Your time is priceless, and this app will save you more time. 
 
 Our next step:
