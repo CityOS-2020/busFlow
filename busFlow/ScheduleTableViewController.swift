@@ -23,6 +23,8 @@ class ScheduleTableViewController: UITableViewController, UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarItem.image = UIImage(named: "schedule")
+        
         self.tableView.reloadData()
     }
 
@@ -38,16 +40,12 @@ class ScheduleTableViewController: UITableViewController, UITableViewDataSource,
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         return self.stations.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        
-        //cell.textLabel!.text =
         return cell
     }
 

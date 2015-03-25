@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F03-Fh-ZxG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F03-Fh-ZxG">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -28,10 +28,9 @@
                 <tabBarController id="utX-iC-Szf" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="8Es-ts-FBX"/>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="lrb-ft-RHM">
+                    <tabBar key="tabBar" contentMode="scaleAspectFill" itemPositioning="fill" id="lrb-ft-RHM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="E4G-Bp-GSG"/>
@@ -42,7 +41,7 @@
             </objects>
             <point key="canvasLocation" x="-397" y="407"/>
         </scene>
-        <!--Item-->
+        <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="RouteViewController" customModule="busFlow" customModuleProvider="target" sceneMemberID="viewController">
@@ -131,7 +130,9 @@
                             <constraint firstItem="Cna-0s-LTp" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="uiX-65-0Ei"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Jcs-oa-AiX"/>
+                    <tabBarItem key="tabBarItem" title="Map" id="Jcs-oa-AiX">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="Uy7-in-y5F"/>
                     <connections>
                         <outlet property="busOfInterestImageView" destination="Ztd-2O-nTt" id="BCY-We-9v6"/>
@@ -147,7 +148,7 @@
             </objects>
             <point key="canvasLocation" x="317" y="53"/>
         </scene>
-        <!--Item-->
+        <!--Schedule-->
         <scene sceneID="bEW-cO-UKB">
             <objects>
                 <tableViewController id="Oaj-TT-ovz" customClass="ScheduleTableViewController" customModule="busFlow" customModuleProvider="target" sceneMemberID="viewController">
@@ -168,7 +169,7 @@
                             <outlet property="delegate" destination="Oaj-TT-ovz" id="ATV-gi-rI5"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="IxS-ZV-fNa"/>
+                    <tabBarItem key="tabBarItem" title="Schedule" id="IxS-ZV-fNa"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwZ-VZ-AVq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

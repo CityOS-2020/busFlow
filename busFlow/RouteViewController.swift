@@ -65,6 +65,8 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarItem.image = UIImage(named: "mapWhiteIcon")
+        
         self.travelDetailsView.layer.cornerRadius = 10.0
         self.travelDetailsView.layer.masksToBounds = true
         
@@ -73,20 +75,16 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         self.travelDetailsView.layer.shadowRadius = 5
         self.travelDetailsView.layer.shadowOpacity = 1.0
       
-        let spanX = 0.01
-        let spanY = 0.01
+       
 
         mapView.addSubview(travelDetailsView)
         mapView.bringSubviewToFront(travelDetailsView)
         self.travelDetailsView.hidden = true
         
-        userLocation = CLLocation(latitude: 43.8470823, longitude: 18.3741403)
+        //just for presentation, user tracking implemented below
+      //  userLocation = CLLocation(latitude: 43.8470823, longitude: 18.3741403)
         
-        var newRegion = MKCoordinateRegion(center: userLocation!.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
-        var annotation = MKPointAnnotation()
-        mapView.addAnnotation(annotation)
-        annotation.coordinate = userLocation!.coordinate
-        mapView.setRegion(newRegion, animated: true)
+       
         mapView.delegate = self
         mapView.mapType = MKMapType.Hybrid
         
@@ -190,7 +188,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         return(pathObjects[nearestIndex], minDistance)
     }
     
-    
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         if !(annotation is CustomPointAnnotation) {
             return nil
@@ -218,7 +215,16 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func locationManager(manager:CLLocationManager, didUpdateLocations locations:[AnyObject]) {
         
-        //self.userLocation = locations[0] as? CLLocation
+        var location:CLLocation = locations[0] as CLLocation
+        self.userLocation = CLLocation(latitude: location.coordinate.longitude, longitude: location.coordinate.latitude)
+        println(self.userLocation)
+        let spanX = 0.01
+        let spanY = 0.01
+        var newRegion = MKCoordinateRegion(center: userLocation!.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
+        var annotation = CustomPointAnnotation(imageName: "user")
+        mapView.addAnnotation(annotation)
+        annotation.coordinate = userLocation!.coordinate
+        mapView.setRegion(newRegion, animated: true)
         updatePOIS()
     }
     
@@ -241,7 +247,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func updatePOIS(){
         if( self.destination != nil && self.userLocation != nil){
-            println(self.destination)
             self.destinationStation = self.findNearestStationFromLocation(self.destination!.coordinate).0
             var resTouple = self.findNearestApproachingBusFromStation(self.userNearestStation!)
             
@@ -324,7 +329,6 @@ class RouteViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                         annotation.coordinate = self.stations[index].coordinates!
                         self.mapView.addAnnotation(annotation)
                     }
-                    println(self.userLocation)
                     self.userNearestStation = self.findNearestStationFromLocation(self.userLocation!.coordinate).0
                 }
                 
